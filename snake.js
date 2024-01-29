@@ -15,14 +15,13 @@ let gameOver = false;
 
 // Images pour la tête et le corps du serpent
 const teteImage = new Image();
-teteImage.src = 'tete.png';
+teteImage.src = './assets/img/PortFolio-6/tete.png';
 
 const corpImage = new Image();
-corpImage.src = 'corp.png';
-
+corpImage.src = './assets/img/PortFolio-6/corp.png';
 // Image pour la pomme
 const pommeImage = new Image();
-pommeImage.src = 'pomme.png';
+pommeImage.src = './assets/img/PortFolio-6/pomme.png';
 
 // Chargement des images avant de commencer le jeu
 teteImage.onload = function () {
@@ -34,16 +33,46 @@ teteImage.onload = function () {
 const startBouton = document.getElementById('startBouton');
 startBouton.addEventListener('click', startGame);
 
+let imagesLoaded = 0; // Compteur pour les images chargées
+const totalImages = 3; // Nombre total d'images à charger
+
+// Vérification si toutes les images sont chargées
+function checkAllImagesLoaded() {
+    if (imagesLoaded === totalImages) {
+        startBouton.disabled = false;
+    }
+}
+
+// Chargement des images avec la vérification
+teteImage.onload = () => {
+    imagesLoaded++;
+    checkAllImagesLoaded();
+};
+
+corpImage.onload = () => {
+    imagesLoaded++;
+    checkAllImagesLoaded();
+};
+
+pommeImage.onload = () => {
+    imagesLoaded++;
+    checkAllImagesLoaded();
+};
+
 function startGame() {
     startBouton.style.display = 'none';
     terrain.style.display = 'block';
     baliseRecord.style.display = 'none';
+
+    // Réinitialisation du jeu
     snake = [{ x: 200, y: 200 }];
+    pomme = { x: 300, y: 300 }; // Réinitialisation de la position de la pomme
     dx = 0;
     dy = 0;
+    point = 0; // Réinitialisation des points
     gameOver = false;
-    pommeImage.onload = jeu;
-    jeu();
+
+    jeu(); // Démarrage du jeu
 }
 
 function endGame() {
